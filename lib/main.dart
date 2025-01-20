@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:smart_eco_mobile/di/container.dart';
+import 'package:smart_eco_mobile/di/module.dart';
 import 'package:smart_eco_mobile/nav/router.dart';
 
 void main() {
+  di.registerModule(AppModule());
   runApp(const MyApp());
 }
 
@@ -30,7 +33,9 @@ class _MyAppState extends State<MyApp> {
       title: 'Smart Eco Mobile',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Colors.deepPurple,
+        ),
         useMaterial3: true,
       ),
       routerConfig: _router,
