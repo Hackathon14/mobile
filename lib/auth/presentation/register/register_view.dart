@@ -28,17 +28,16 @@ class _RegisterViewState extends State<RegisterView> {
   final TextEditingController _passwordConfirmController =
       TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  bool _acceptTerms = false;
 
   void _handleRegister(BuildContext context) {
-    if (_formKey.currentState!.validate()) {
-      // Register user
-      context.read<RegisterController>().register(
-            name: _nameController.text,
-            email: _emailController.text,
-            password: _passwordController.text,
-          );
-    }
+    // if (_formKey.currentState!.validate()) {
+    // Register user
+    context.read<RegisterController>().register(
+          name: _nameController.text,
+          email: _emailController.text,
+          password: _passwordController.text,
+        );
+    // }
   }
 
   @override
@@ -50,7 +49,7 @@ class _RegisterViewState extends State<RegisterView> {
       child: BlocListener<RegisterController, RegisterControllerState?>(
         listener: (context, state) {
           if (state is RegisterControllerSuccess) {
-            context.go('/user-preferences');
+            context.go('/home');
             showSnackBar(
               context,
               AppText.registerSuccess,

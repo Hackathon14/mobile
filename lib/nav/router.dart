@@ -1,6 +1,7 @@
 import 'package:go_router/go_router.dart';
 import 'package:smart_eco_mobile/auth/presentation/login_view.dart';
 import 'package:smart_eco_mobile/auth/presentation/register/register_view.dart';
+import 'package:smart_eco_mobile/home/home_view.dart';
 
 GoRouter createRouter() => GoRouter(
       initialLocation: '/login',
@@ -15,6 +16,11 @@ GoRouter createRouter() => GoRouter(
           path: '/register',
           name: 'RegisterView',
           builder: (context, state) => RegisterView(),
+        ),
+        GoRoute(
+          path: '/home',
+          name: 'HomeView',
+          builder: (context, state) => HomeView(),
         ),
       ],
     );

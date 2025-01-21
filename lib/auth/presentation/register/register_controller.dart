@@ -43,18 +43,18 @@ class RegisterController extends Cubit<RegisterControllerState?> {
     required String name,
   }) async {
     try {
-      final result = await _registerUsecase.register(
-        email: email,
-        password: password,
-        name: name,
-      );
+      // final result = await _registerUsecase.register(
+      //   email: email,
+      //   password: password,
+      //   name: name,
+      // );
 
-      if (result) {
-        emit(
-          RegisterControllerSuccess(),
-        );
-        return;
-      }
+      // if (result) {
+      emit(
+        RegisterControllerSuccess(),
+      );
+      return;
+      // }
     } on AuthException catch (e) {
       emit(
         RegisterControllerFailed(
