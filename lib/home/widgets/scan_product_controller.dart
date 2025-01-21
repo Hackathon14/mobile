@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:openfoodfacts/openfoodfacts.dart';
+import 'package:smart_eco_mobile/home/domain/model/product_part.dart';
 
 abstract class ScanProductState {}
 
@@ -9,7 +10,7 @@ class ScanProductInitial extends ScanProductState {}
 class ScanProductLoading extends ScanProductState {}
 
 class ScanProductSuccess extends ScanProductState {
-  final Product? product;
+  final ProductPart? product;
 
   ScanProductSuccess(this.product);
 }
@@ -36,7 +37,13 @@ class ScanProductController extends Cubit<ScanProductState> {
           await OpenFoodAPIClient.getProductV3(configuration);
 
       if (result.status == ProductResultV3.statusSuccess) {
-        emit(ScanProductSuccess(result.product));
+        emit(ScanProductSuccess(result.product == null
+            ? null
+            : ProductPart(
+                productName: result.product!.productName ?? 'Marque inconnue',
+                imageFrontUrl: result.product!.imageFrontUrl ?? '',
+                packaging: result.product!.packaging ?? '',
+              )));
       } else {
         emit(ScanProductError('Erreur lors de la recherche du produit'));
       }
