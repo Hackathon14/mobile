@@ -37,6 +37,7 @@ class _MyAppState extends State<MyApp> {
           seedColor: Colors.deepPurple,
         ),
         useMaterial3: true,
+        scaffoldBackgroundColor: Colors.white,
       ),
       routerConfig: _router,
     );
