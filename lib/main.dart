@@ -3,6 +3,8 @@ import 'package:go_router/go_router.dart';
 import 'package:smart_eco_mobile/di/container.dart';
 import 'package:smart_eco_mobile/di/module.dart';
 import 'package:smart_eco_mobile/nav/router.dart';
+import 'package:smart_eco_mobile/utils/color.dart';
+import 'package:openfoodfacts/openfoodfacts.dart';
 
 void main() {
   di.registerModule(AppModule());
@@ -22,6 +24,11 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
+    OpenFoodAPIConfiguration.userAgent = UserAgent(name: 'SmartEco');
+    OpenFoodAPIConfiguration.globalLanguages = <OpenFoodFactsLanguage>[
+      OpenFoodFactsLanguage.FRENCH
+    ];
+    OpenFoodAPIConfiguration.globalCountry = OpenFoodFactsCountry.FRANCE;
 
     _router = createRouter();
   }
@@ -33,6 +40,7 @@ class _MyAppState extends State<MyApp> {
       title: 'Smart Eco Mobile',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
+        primaryColor: primaryColor,
         colorScheme: ColorScheme.fromSeed(
           seedColor: Colors.deepPurple,
         ),

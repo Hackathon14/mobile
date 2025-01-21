@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:smart_eco_mobile/auth/presentation/components/custom_snack_bar.dart';
 import 'package:smart_eco_mobile/home/widgets/scan_product_btn.dart';
+import 'package:smart_eco_mobile/home/widgets/scan_product_controller.dart';
 import 'package:smart_eco_mobile/utils/color.dart';
 import 'package:smart_eco_mobile/utils/constant.dart';
 
@@ -10,30 +13,64 @@ class HomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: horizontalScreenPadding,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Gap(20),
-              _DisplayUserGreeting(),
-              const Gap(30),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 40),
-                child: _UserStats(),
+    return BlocProvider(
+      create: (context) => ScanProductController(),
+      child: Builder(builder: (context) {
+        return Scaffold(
+          body: SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: horizontalScreenPadding,
               ),
-              const Gap(70),
-              Center(
-                child: ScanProductBtn(),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Gap(20),
+                  _DisplayUserGreeting(),
+                  const Gap(30),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 40),
+                    child: _UserStats(),
+                  ),
+                  const Gap(70),
+                  Center(
+                    child: ScanProductBtn(
+                      onScan: (barcode) {
+                        if (barcode == null) {
+                          showSnackBar(context,
+                              'Erreur lors de la lecture du code-barres');
+                          return;
+                        }
+
+                        context.read<ScanProductController>().scan(barcode);
+                      },
+                    ),
+                  ),
+                  const Gap(30),
+                  BlocBuilder<ScanProductController, ScanProductState>(
+                    builder: (context, scanProductState) {
+                      if (scanProductState is ScanProductLoading) {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      } else if (scanProductState is ScanProductSuccess) {
+                        final product = scanProductState.product;
+
+                        if (product == null) {
+                          return const Text('Produit non trouvé');
+                        }
+                        return Text(product.productName ?? 'Marque inconnue');
+                      }
+
+                      return SizedBox.shrink();
+                    },
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
-        ),
-      ),
+        );
+      }),
     );
   }
 }
