@@ -21,7 +21,7 @@ class AuthNavigationController extends Cubit<AuthNavigationState> {
 
   @override
   Future<void> close() {
-    authStateChangeSubscription?.cancel();
+    // authStateChangeSubscription?.cancel();
     return super.close();
   }
 
